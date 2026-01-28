@@ -35,7 +35,6 @@ MomentumTouch
 
 **使用说明**：
 - 推荐材料：PLA 或 ABS
-- 打印参数：层高 0.2mm，填充率 20-30%
 - 支撑结构：根据模型复杂度选择是否添加
 
 #### for unity/
@@ -65,6 +64,7 @@ delay(100);                // 采样间隔(毫秒)
 ```
 
 **数据输出格式**：
+
 ```
 1023
 512
@@ -76,6 +76,7 @@ delay(100);                // 采样间隔(毫秒)
 **功能**：使用 HX711 模块采集拉力传感器数据并转换为重量值。
 
 **硬件连接**：
+
 - HX711 SCK → Arduino D3
 - HX711 DT → Arduino D2
 - VCC → 5V
@@ -89,6 +90,7 @@ int HX711_DT = 2;         // 数据引脚
 ```
 
 **校准步骤**：
+
 1. 上传程序到 Arduino
 2. 空载状态下记录输出值
 3. 放置已知重量物体
@@ -113,7 +115,7 @@ Pull:128
 #### 系统要求
 - **Unity 版本**：2021.3.45f2 (推荐使用相同版本以避免兼容性问题)
 - **VR SDK**：Meta XR SDK v63.0.0
-- **支持设备**：Meta Quest 2/3/Pro 或其他支持 OpenXR 的 VR 设备
+- **支持设备**：Meta Quest 2/3/Pro VR 设备
 - **操作系统**：Windows 10/11 (64位)
 
 #### 项目结构
@@ -124,7 +126,7 @@ Unity/
 │   ├── Scripts/         # C#交互脚本
 │   ├── Models/          # 导入的3D模型
 │   ├── Oculus/          # Meta XR SDK
-|   ├── Resources/       # 资源文件
+│   ├── Resources/       # 资源文件
 │   └── ...              # 其他
 ├── Packages/
 │   └── manifest.json    # 包依赖配置
@@ -179,26 +181,34 @@ string portName = "COM3";  // 根据实际端口修改
 int baudRate = 9600;
 ```
 
+![image-20260128160000383](https://raw.githubusercontent.com/zheliku/TyporaImgBed/main/ImgBed202601281600512.png)
+
 可通过设备管理器查看 Arduino 实际使用的 COM 口。
 
-**6. 运行项目**
+**6. 选择模式**
 
-1. 打开主场景：`Assets/Scenes/MainScene.unity`
+点击 Main 物体设置交互方式：
+
+- Virtual Hands：虚拟手交互
+- Real Objects：实体交互
+
+![image-20260128160114340](https://raw.githubusercontent.com/zheliku/TyporaImgBed/main/ImgBed202601281601381.png)
+
+**7. 运行项目**
+
+1. 打开主场景：`Assets/Scenes/Main.unity`
 2. 点击 Play 按钮或按 `Ctrl+P`
 3. 戴上 VR 头显进行交互测试
 
-#### 构建与部署
-
-**构建为 APK（Quest 独立运行）**：
-1. `File` → `Build Settings`
-2. 切换平台到 `Android`
-3. 连接 Quest 设备
-4. 点击 `Build And Run`
-
-**PC VR 模式**：
-1. 保持平台为 `Windows`
-2. 通过 Link 线缆或 Air Link 连接设备
-3. 直接在 Unity 中运行
+> 如果没有头显，也可桌面运行：
+>
+> - 按下空格，释放物块
+>
+> - 按下 R 键，重置位置
+>
+> - 拖拽滑动条控制时间轴
+>
+>   <img src="https://raw.githubusercontent.com/zheliku/TyporaImgBed/main/ImgBed202601281640939.png" alt="image-20260128164048868" style="zoom:50%;" />
 
 ## 完整工作流程
 
@@ -212,7 +222,6 @@ int baudRate = 9600;
 1. 确认 Arduino 通过 USB 连接到计算机并正常工作
 2. 使用串口监视器测试传感器数据输出
 3. 打开 Unity 项目并配置串口参数
-4. 导入 `Models/for unity/` 中的 FBX 模型（如需替换）
 
 ### 测试运行
 1. 启动 Unity 项目
@@ -220,40 +229,10 @@ int baudRate = 9600;
 3. 运行场景
 4. 操作物理硬件，观察 VR 中的交互反馈
 
-## 故障排查
-
-### Arduino 问题
-- **串口无法打开**：检查驱动安装、端口号、波特率设置
-- **数据异常**：检查传感器接线、校准 GapValue 参数
-- **无数据输出**：确认程序上传成功，检查串口监视器波特率
-
-### Unity 问题
-- **项目无法打开**：确认 Unity 版本匹配（2021.3.45f2）
-- **Meta XR SDK 报错**：检查 manifest.json 中的路径配置
-- **VR 设备不识别**：启用开发者模式、重启 Oculus 软件
-- **串口读取失败**：确认 COM 口号正确、Arduino 正在运行
-
-### VR 交互问题
-- **手部追踪失效**：检查 VR 设备权限设置
-- **触觉反馈不同步**：降低 Arduino 数据发送频率或优化 Unity 脚本
-- **模型显示异常**：重新导入 FBX 文件并检查材质
-
-## 技术支持
-
-如遇到问题，请检查以下资源：
-- [Arduino 官方文档](https://www.arduino.cc/reference/)
-- [Unity 官方手册](https://docs.unity3d.com/)
-- [Meta XR SDK 文档](https://developer.oculus.com/documentation/unity/)
-
-## 开源协议
-
-本项目将在论文正式录用后发布，具体开源协议待定。
-
 ## 引用
 
 如果本项目对您的研究有帮助，请引用我们的论文（论文信息待补充）。
 
 ---
 
-**更新日期**：2025年12月2日  
-**项目状态**：开发完成，等待论文录用后正式发布
+**更新日期**：2026年01月28日 

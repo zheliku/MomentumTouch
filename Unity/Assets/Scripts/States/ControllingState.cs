@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class ControllingState : BaseState
 {
@@ -21,37 +20,12 @@ public class ControllingState : BaseState
     }
     
     public override void Update() {
-        
         float deltaAngle = main.interactionType switch {
             InteractionType.VirtualHands => main.knobAngle.Delta,
             InteractionType.RealObjects  => -AngleInput.Instance.Delta, // 负号保证角度旋转方向和物块运动方向一致
             _                            => throw new ArgumentOutOfRangeException()
         } * main.angleRatio;
-
-        
-        
         if (deltaAngle != 0) {
-            
-            DataLogger.LineSwitching = true;
-            
-            if (DataLogger.aaaaa)
-            {
-                DataLogger.CategoryTags = new[] { 0, 0, 0 };
-                DataLogger.aaaaa = false;
-            }
-            
-            if (DataLogger.lastCategoryTags == 0 || DataLogger.lastCategoryTags == 1 || DataLogger.lastCategoryTags == 2 )
-            {
-                DataLogger.CategoryTags[DataLogger.lastCategoryTags] = 1;
-                // DataLogger.lastCategoryTags = 3;
-            }
-
-            
-            
-            
-            
-            
-            
             // 两帧之间的时间变化
             float lastTime = main.moveTime;
             float nowTime  = main.moveTime + deltaAngle / 360; // 表示转一圈代表 1 s
@@ -92,5 +66,4 @@ public class ControllingState : BaseState
     public override void SwitchState() {
         
     }
-    
 }

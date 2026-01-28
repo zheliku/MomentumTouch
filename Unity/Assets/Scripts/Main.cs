@@ -17,8 +17,6 @@ public partial class Main : MonoBehaviour
 
     public float maxSpeed = 1; // 初速度
 
-    public static bool dataLog = false;
-
     public BlockSpringCouple.EBlock block = BlockSpringCouple.EBlock.A; // 给哪个物块初速度
 
     public float moveTime = 0; // 移动时间
@@ -131,9 +129,9 @@ public partial class Main : MonoBehaviour
 
         Debug.Log($"init interaction on start: {isVirtualHands}");
 
-        // cubeGrabInteractable.enabled = isVirtualHands;
-        // cubeGrab.enabled             = isVirtualHands;
-        // cubeGrabEvent.enabled        = isVirtualHands;
+        cubeGrabInteractable.enabled = isVirtualHands;
+        cubeGrab.enabled             = isVirtualHands;
+        cubeGrabEvent.enabled        = isVirtualHands;
 
         buttonPressInteractable.enabled = isVirtualHands;
         buttonPressEvent.enabled        = isVirtualHands;
@@ -161,9 +159,6 @@ public partial class Main : MonoBehaviour
         }
     }
 
-    private DataLogger _dataLogger = new DataLogger();
-    private CSVDataVisualizer _csvDataVisualizer = new CSVDataVisualizer();
-    
     // Update is called once per frame
     void Update() {
         switch (statusType) {
@@ -190,30 +185,6 @@ public partial class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R)) {
             OnButtonPress();
-        }
-        
-        // if (Input.GetKeyDown(KeyCode.A))
-        // {
-        //     DataLogger.CategoryTags[0] = 1;
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.B)) {
-        //     DataLogger.CategoryTags[1] = 1;
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.C)) {
-        //     DataLogger.CategoryTags[2] = 1;
-        // }
-        
-        if (Input.GetKeyDown(KeyCode.D) && statusType == StateType.Controlling) {
-            _dataLogger.RecordToCSV();
-            _csvDataVisualizer.Visualizer();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            DataLogger.LineSwitching = true;
-            DataLogger.CategoryTags = new[] { 0, 0, 0 };
         }
     }
 
@@ -253,13 +224,6 @@ public partial class Main : MonoBehaviour
             // Finished --> Prepared
             // Running  --> Prepared
             EventMgr.Instance.EventTrigger(nameof(MainEventType.EnterPreparedStatus));
-            DataLogger.newRecord = true;
-            DataLogger.CategoryTags = new[] { 0, 0, 0 };
-            // if (DataLogger.aaaaa)
-            // {
-            //     Debug.LogError("更新。。。。。。。");
-            // }
-            
         }
     }
 
@@ -267,9 +231,7 @@ public partial class Main : MonoBehaviour
     /// 旋钮旋转的触发事件
     /// </summary>
     public void OnKnobRotate() {
-        if (statusType == StateType.Running)
-        {
-            dataLog = true;
+        if (statusType == StateType.Running) {
             // Running --> Controlling
             EventMgr.Instance.EventTrigger(nameof(MainEventType.EnterControllingStatus));
         }

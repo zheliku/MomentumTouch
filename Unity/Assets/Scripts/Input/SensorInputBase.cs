@@ -96,31 +96,25 @@ public abstract class SensorInputBase<T> : MonoBehaviour where T : SensorInputBa
     /// </summary>
     /// <param name="port"></param>
     /// <returns></returns>
-protected bool TryOpenPort(string port)
+    protected bool TryOpenPort(string port)
     {
-        const int maxRetries = 5;
-        const int readTimeout = 150;
-    
+        const int maxRetries = 5; // 新增最大重试次数
+        const int readTimeout = 1500; // 延长读取超时时间
+        
         var typeName = GetType().Name;
-
+        // if (typeName == nameof(AngleInput))
+        //     Debug.Log(GetType().Name + ": TryOpen!" + port);
         try
         {
-            // 释放之前的端口实例
-            if (_serialPort != null)
-            {
-                _serialPort.Close();
-                _serialPort.Dispose();
-                _serialPort = null;
-            }
-
             _serialPort = new SerialPort(port, baudRate);
-            _serialPort.ReadTimeout = readTimeout; // 设置读取超时
-
-            if (_serialPort.IsOpen)
+            if (_serialPort.IsOpen) // 跳过已经打开的端口
                 return false;
 
-            _serialPort.Open();
-        
+            // if (typeName == nameof(AngleInput))
+            //     Debug.Log(typeName + ": TryOpen!" + port);
+
+            _serialPort.Open(); // 打开串口连接
+            
             string validData = null;
             for (int i = 0; i < maxRetries; i++)
             {
@@ -138,35 +132,57 @@ protected bool TryOpenPort(string port)
                     Debug.Log($"尝试 {i+1}/{maxRetries}: 端口 {port} 读取超时");
                 }
             
-                Thread.Sleep(300); // 重试间隔
+                Thread.Sleep(300); // 每次重试间隔
             }
-        
+
             if (validData == null)
             {
-                _serialPort?.Close();
+                _serialPort.Close();
                 return false;
             }
+            
+            // if (typeName == nameof(AngleInput))
+            //     Debug.Log(typeName + ": Opened!" + port);
 
-            portName = _serialPort.PortName;
-            TxtMgr.Instance.Save(typeof(T).Name + ".txt", portName);
+            // var i1 = _serialPort.ReadLine(); // TODO 需要至少先读一次以清空缓存，否则会读到不合理的值
+            // var i2 = _serialPort.ReadLine();
+            // var input = _serialPort.ReadLine();
 
-            _isRunning = _serialPort.IsOpen;
+            // if (typeName == nameof(AngleInput))
+            //     Debug.Log(input + ": " + typeName);
+
+            
+            
+            // if (!IsValidString(input))
+            // {
+            //     // 不符合要求的端口也跳过
+            //     _serialPort.Close();
+            //     return false;
+            // }
+
+            portName = _serialPort.PortName; // 获取正确的端口名
+
+            string filePath = typeof(T).Name + ".txt";
+            TxtMgr.Instance.Save(filePath, portName);
+
+            _isRunning = _serialPort.IsOpen; // 监测到端口，则开启线程
 
             if (_isRunning)
             {
+                // 开启线程
                 _sensorListener = new Thread(SensorListener)
                 {
                     IsBackground = true
                 };
                 _sensorListener.Start();
-                Debug.Log(portName + " opened!");
+                Debug.Log(portName + " has opened!");
 
-                Invoke(nameof(SetStartValueDelay), 1f);
+                Invoke(nameof(SetStartValueDelay), 1f); // 延时 1s 设置传感器初始状态
             }
         }
-        catch (Exception ex) // 建议记录异常ex以便调试
+        catch (Exception)
         {
-            _serialPort?.Close();
+            _serialPort.Close();
             return false;
         }
 

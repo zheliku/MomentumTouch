@@ -21,7 +21,7 @@ MonoBehaviour:
   sharedAnchorSupport: 0
   renderModelSupport: 0
   trackedKeyboardSupport: 0
-  bodyTrackingSupport: 1
+  bodyTrackingSupport: 0
   faceTrackingSupport: 0
   eyeTrackingSupport: 0
   virtualKeyboardSupport: 0
@@ -39,5 +39,5 @@ MonoBehaviour:
   systemSplashScreen: {fileID: 0}
   systemSplashScreenType: 0
   _systemLoadingScreenBackground: 0
-  ovrPluginMd5Win64: e2f96821b9509a5aaf6b44cbb176818336fe02f386da21f899242b4b291b1221
-  ovrPluginMd5Android: b11c9996e5f49cf2c13b34f2f4bb8d16024598aec207a706b3980ff3870f5f3a
+  ovrPluginMd5Win64: e2f96821b9509a5aaf6b44cbb17681830e37dc34ea35c0a9837f794e0ff4e216
+  ovrPluginMd5Android: b11c9996e5f49cf2c13b34f2f4bb8d1692f4901014a7b483084ed7cc34fea238

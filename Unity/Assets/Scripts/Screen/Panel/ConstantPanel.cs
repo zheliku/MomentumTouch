@@ -13,8 +13,6 @@ public class ConstantPanel : MonoBehaviour
     public TextMeshPro textLStart;
     public TextMeshPro textL;
 
-    public static float initialSpeed;
-
 
     public void Awake() {
         textMassA      = DataSetting.GetComponentFromChild<TextMeshPro>(transform, "MassA/Expression/Value");
@@ -46,9 +44,7 @@ public class ConstantPanel : MonoBehaviour
         textL.text       = MathUtil.FormatFloat(l);
     }
 
-    public void SetStartSpeed(float speed)
-    {
-        initialSpeed = speed;
+    public void SetStartSpeed(float speed) {
         textSpeedStart.text = MathUtil.FormatFloat(speed);
     }
 }

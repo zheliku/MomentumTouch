@@ -52,8 +52,7 @@ public class RunningState : BaseState
     
     // 检查切换状态的方法
     public override void SwitchState() {
-        if (AngleInput.Instance.Delta != 0)
-        {
+        if (AngleInput.Instance.Delta != 0) {
             // Running --> Controlling
             EventMgr.Instance.EventTrigger(nameof(MainEventType.EnterControllingStatus));
         }

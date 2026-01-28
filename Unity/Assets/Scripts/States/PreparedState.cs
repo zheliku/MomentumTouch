@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PreparedState : BaseState
 {
-    public PreparedState(Main main) {
+    public PreparedState(Main main)
+    {
         this.main = main;
     }
 
-    public override void Enter() {
-        if (main.statusType != StateType.Prepared) {
+    public override void Enter()
+    {
+        if (main.statusType != StateType.Prepared)
+        {
             main.ExistCurrentStatus();
             main.statusType = StateType.Prepared; // 更改当前状态
         }
@@ -23,7 +26,7 @@ public class PreparedState : BaseState
         DataSetting.Instance.graphMgr.HideHighlightPoints();
 
         // graph：重置绘制
-        DataSetting.Instance.graphMgr.Reset();
+        // DataSetting.Instance.graphMgr.Reset();
 
         // couple：显示箭头数据
         DataSetting.Instance.couple.HideArrows();
@@ -41,7 +44,8 @@ public class PreparedState : BaseState
         main.blockBEffect.highlighted = true;
         main.menuEffect.highlighted   = true;
 
-        if (main.interactionType == InteractionType.VirtualHands) {
+        if (main.interactionType == InteractionType.VirtualHands)
+        {
             main.cubeGrab.enabled             = true;
             main.cubeGrabEvent.enabled        = true;
             main.cubeGrabInteractable.enabled = true;
@@ -52,30 +56,40 @@ public class PreparedState : BaseState
         PullInput.Instance.IsPulling  = false;
     }
 
-    public override void Update() {
+    public override void Update()
+    {
         SwitchState();
     }
 
-    public override void Exist() {
+    public override void Exist()
+    {
         // 取消交互
         main.blockBEffect.highlighted = false;
         main.menuEffect.highlighted   = false;
+
+        DataSetting.Instance.graphMgr.Reset();
     }
 
     // 检查切换状态的方法
-    public override void SwitchState() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+    public override void SwitchState()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             // couple：给 block 设置初速度
             DataSetting.Instance.couple.SetPreSpeed(main.block, main.maxSpeed);
 
             // panel：更新面板信息
             DataSetting.Instance.panel.SetStartSpeed(main.maxSpeed);
 
+            // DataSetting.Instance.couple.SetPreSpeed(BlockSpringCouple.EBlock.B, 10);
+            DataSetting.Instance.couple.ShowArrows();
+
             // Prepared --> Running
             EventMgr.Instance.EventTrigger(nameof(MainEventType.EnterRunningStatus));
         }
 
-        if (PullInput.Instance.IsPulling) {
+        if (PullInput.Instance.IsPulling)
+        {
             // EventMgr.Instance.EventTrigger(nameof(EEventType.EnterPullingStatus));
             main.OnSpringPullEnter();
         }

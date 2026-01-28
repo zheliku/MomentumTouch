@@ -66,24 +66,18 @@ public class DataPanel : MonoBehaviour
         graphMgr.ShowGraph(GraphType.Velocity);
         ShowPanel(PanelType.Velocity);
         panelType = PanelType.Velocity;
-        DataLogger.CategoryTags[0] = 1;
-        DataLogger.lastCategoryTags = 0;
     }
 
     public void ShowMomentumPanel() {
         graphMgr.ShowGraph(GraphType.Momentum);
         ShowPanel(PanelType.Momentum);
         panelType = PanelType.Momentum;
-        DataLogger.CategoryTags[1] = 1;
-        DataLogger.lastCategoryTags = 1;
     }
 
     public void ShowKineticEnergyPanel() {
         graphMgr.ShowGraph(GraphType.KineticEnergy);
         ShowPanel(PanelType.KineticEnergy);
         panelType = PanelType.KineticEnergy;
-        DataLogger.CategoryTags[2] = 1;
-        DataLogger.lastCategoryTags = 2;
     }
 }
 
